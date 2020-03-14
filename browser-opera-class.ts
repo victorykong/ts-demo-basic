@@ -2,23 +2,22 @@
 class DataHelper {
     // 成员
     localName: string;  // localStorage 的键
-    dataKey: number; // 每条数据的 id
 
     constructor(localName: string) {
         this.localName = localName;
     }
 
     // 读取所有数据
-    getData(): object[] | null {
+    getData(): any {
         const dataStr: string | null = window.localStorage.getItem(this.localName); // 有则 [], 无则 null
         // 断言: 我已经确认是什么类型的值了
         return JSON.parse(dataStr as string);
     }
 
     // 读取指定 id 的数据
-    getOneofData(id: number): object {
+    getOneofData(id: number): object | null {
         const array: Array<any> = this.getData();
-        let obj: object = null;
+        let obj: null = null;
         for (let val of array) {
             if (val && val.id && val.id === id) {
                 obj = val;
@@ -30,7 +29,7 @@ class DataHelper {
 
     // 增加一条数据, 并返回增加数据后的 id
     addData(content: string): number {
-        let id = -1, array: Array<object> | null;
+        let id = -1, array: any;
 
         if (this.getData() instanceof Array) {
             array = this.getData();
@@ -40,7 +39,7 @@ class DataHelper {
             id = 0;
         }
 
-        let obj: object = {};
+        let obj: any = {};
         obj["id"] = id;
         obj["content"] = content;
         array.push(obj);
